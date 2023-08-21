@@ -1,0 +1,21 @@
+server:
+  port: 8086
+
+javadochub:
+  maven:
+    # maven 公共仓库
+    repository: https://repo.maven.apache.org/maven2
+    # maven 私有仓库
+    internal:
+    # 私有仓库私有包 group 前缀，多个使用逗号分割，例如 world.weibiansanjue,com.weibiansanjue
+    internal-group-prefix:
+  storage: ${user.home}/.javadochub
+
+logging:
+  level:
+    world.weibiansanjue.doctools.javadochub: debug
+
+spring:
+  web:
+    resources:
+      static-locations: classpath:/static/, file:${javadochub.storage}/storage

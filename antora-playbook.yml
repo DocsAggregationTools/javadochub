@@ -1,0 +1,49 @@
+site:
+  title: /** JavadocHub */
+  url: "/"
+  start_page: docs::index.adoc
+runtime:
+  cache_dir: ./.cache/antora
+  fetch: true
+  log:
+    level: info
+
+content:
+  edit_url: '{web_url}/blob/{refname}/{path}'
+  sources:
+  # 本项目文档
+  - url: .
+    branches: HEAD
+    start_path: docs
+
+
+asciidoc:
+  attributes:
+    # 文本画图渲染服务 kroki 地址
+#    kroki-server-url: http://172.16.30.158:9500
+    # tab 标签联动
+    tabs-sync-option: ''
+    # 前页（Prev）、后页（Next）
+    page-pagination: ''
+    page-toctitle: '目录'
+    # 键盘、按钮、菜单
+    experimental: ''
+    commandkey: &#8984;
+  extensions:
+  - asciidoctor-kroki
+  - '@asciidoctor/tabs'
+
+antora:
+  extensions:
+  # 全文搜索
+  - require: '@antora/lunr-extension'
+    languages: [zh,en]
+
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  supplemental_files: ./supplemental-ui
+
+output:
+  dir: ./src/main/resources/static/help

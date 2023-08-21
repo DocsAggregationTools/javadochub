@@ -1,0 +1,26 @@
+{
+  "name": "JavadocHub",
+  "version": "1.0.0",
+  "description": "JavadocHub",
+  "author": "weibiansanjue",
+  "private": true,
+  "scripts": {
+    "start": "http-server public -p 9999"
+  },
+  "dependencies": {
+    "@antora/cli": "3.1.4",
+    "@antora/lunr-extension": "1.0.0-alpha.8",
+    "@antora/site-generator": "3.1.4",
+    "@asciidoctor/tabs": "1.0.0-beta.5",
+    "@node-rs/jieba": "1.7.0",
+    "asciidoctor": "3.0.2",
+    "asciidoctor-kroki": "0.17.0",
+    "lunr-languages": "1.12.0"
+  },
+  "engines": {
+    "node": ">= 16.20.2",
+    "npm": ">= 8.19.4"
+  },
+  "devDependencies": {
+  }
+}

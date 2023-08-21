@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="author" content="weibiansanjue">
+  <meta name="description" content="host javadoc like javadoc.io">
+
+  <title th:text="|${groupId}:${artifactId}:${version} at JavadocHub|">JavadocHub</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/doc.css">
+  <script>
+    function iframeload(i) {
+      var href = i.contentWindow.location.href;
+      var domain = href.split('/')[2];
+      href = href.replace(domain, domain + '/doc');
+      window.history.replaceState('', '', href);
+      console.log(href);
+    }
+  </script>
+</head>
+<body>
+<div class="body-container">
+
+  <nav class="navbar navbar-inverse navbar-fixed-top" style="height: 51px;">
+    <div class="nav-container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="/" style="color: #fff;font-size:20px;">/** JavadocHub */</a>
+
+        <ul class="nav navbar-nav">
+          <!-- GroupId -->
+          <li id="group-id" title="GroupId">
+            <a href="#" style="pointer-events: none">
+              <span th:text="${groupId}">GroupId</span>
+            </a>
+          </li>
+
+          <!-- ArtifactId -->
+          <li class="dropdown" id="artifact-id">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+              <span th:text="${artifactId}">ArtifactId</span>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li th:each="id : ${artifactIds}">
+                <a class="dropdown-item" href="#" th:text="${id}" th:href="|/doc/${groupId}/${id}/|">artifactId</a>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Version -->
+          <li class="dropdown" id="version">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+              <span th:text="${version}" id="current-version">Version</span>
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li th:each="v : ${versions}">
+                <a class="dropdown-item version " href="#" th:text="${v}"
+                   th:href="|/doc/${groupId}/${artifactId}/${v}/overview-summary.html|">version</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class="fill">
+    <iframe name="main" id="docpage" onload="iframeload(this)"
+      th:src="|/${groupId}/${artifactId}/${version}/${page}|" >
+    </iframe>
+  </div>
+
+</div>
+<div id="loading" class="text-center" style="display: none;">
+  <div class="spinner-border text-dark" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script>
+  var $currentVersion = $('#current-version');
+  $('a.version').on('click', function(e){
+    var selectedVersion = $(e.target).text();
+    $currentVersion.text(selectedVersion);
+    $('#loading').show();
+  });
+</script>
+</body>
+</html>

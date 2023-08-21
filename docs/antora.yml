@@ -1,0 +1,7 @@
+name: docs
+title: JavadocHub
+version: ~
+display_version: 最新
+nav:
+  - modules/ROOT/nav.adoc
+  - modules/javadoc/nav.adoc

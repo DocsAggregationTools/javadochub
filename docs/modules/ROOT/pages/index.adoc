@@ -1,0 +1,17 @@
+= 简介
+
+
+
+JavadocHub 是轻量级的 javadoc 文档聚合、托管服务
+使用 SpringBoot 开发
+
+
+自定义 overview 页面
+
+* https://stackoverflow.com/questions/25947627/how-to-customize-overview-page-in-javadoc[java - How to customize "Overview" page in JavaDoc? - Stack Overflow]
+* https://github.com/asciidoctor/asciidoclet[asciidoctor/asciidoclet: :clipboard: A Javadoc Doclet based on Asciidoctor that lets you write Javadoc in the AsciiDoc syntax. (github.com)]
+** package / overview.adoc
+** maven-javadoc-plugin-2.10.4 / asciidoclet-1.5.6
+
+https://nisrulz.com/javadoc-themer/index.html
+https://github.com/nisrulz/javadoc-themer

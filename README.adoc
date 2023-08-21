@@ -1,0 +1,30 @@
+
+= JavadocHub
+
+轻量级的 javadoc 文档聚合、托管服务
+
+
+## 环境信息
+
+* jdk1.8
+* maven3
+
+## 运行
+
+编译
+
+[source,bash]
+....
+mvn clean package
+....
+
+启动
+
+[source,bash]
+....
+java -jar javadochub.jar
+....
+
+访问
+
+http://localhost:8086

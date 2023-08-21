@@ -1,0 +1,409 @@
+= Javadoc 编写指南
+
+== 前言
+
+* 在 java 源码中按一定的格式编写注释，就可以利用 javadoc 工具自动生成配套的 HTML 格式 API 文档
+* java 支持的注释格式
+** `//` 单行注释
+** `/* */` 多行注释
+** `/**  */` javadoc 注释、文档注释
+* 文档注释注释可以描述包、类、接口、函数、构造函数、成员字段，并写在其前面
+* 包文档注释写在包根目录下的 `package-info.java` 文件中
+* 一般为 `public static` 修饰的公有成员字段添加文档注释，并使用 `{@value }` 内联标记来获取变量的值
+* 由于是官方标准，按照此标准编写文档注释，IDE 会有更好的支持，在 IDE 平台上开发的插件也更能辅助开发人员阅读源码
+* javadoc 提供的文档注释标准已可满足文档需求，如无必要不需要再自定义标记，例如：`@date`、`@description` 等
+* 如果想通过自定义标记来实现更丰富的文档功能（例如项目活文档），可以使用 oracle 提供的 https://www.oracle.com/java/technologies/javase/javadoc-tool.html[Javadoc 工具]
+* 添加自定义标签也应该是在原有标准的基础上进行扩充
+
+
+== javadoc 文档组成
+
+=== 简介
+[source,java]
+....
+/**
+* 描述部分：description. 用一句话或者一段话简要描述该类的作用，以英文句号结束
+* 这句话会被提取并放到索引目录中. javadoc 工具不识别中文句号. 当识别到第一个英文句号时，
+* 系统会自动认为概要描述已经结束，紧接其后的话都不会被放到概要中. 描述中可以使用
+* html 标签，如 `<p></p>` `<pre></pre>` `<a></a>` `<li></li>`
+* 空行
+* 标记部分：block tags. 例如：@see @return 等
+*/
+....
+
+=== 示例
+.类 文档
+[source,java]
+....
+/**
+* Returns an Image object that can then be painted on the screen.
+* The url argument must specify an absolute <a href="#{@link}">{@link URL}</a>.
+* The name argument is a specifier that is relative to the url argument.
+* <p>
+* This method always returns immediately, whether or not the
+* image exists. Wh  en this applet attempts to draw the image on
+* the screen, the data will be loaded. The graphics primitives
+* that draw the image will incrementally paint on the screen.
+*
+* @param  url  an absolute URL giving the base location of the image
+* @param  name the location of the image, relative to the url argument
+* @return the image at the specified URL
+* @see Image
+*/
+public Image getImage(URL url, String name) {
+    try {
+        return getImage(new URL(url, name));
+    } catch (MalformedURLException e) {
+        return null;
+    }
+}
+....
+
+.包 文档
+[source,java]
+....
+/**
+* Provides the classes necessary to create an applet and the classes an applet uses
+* to communicate with its applet context.
+* <p>
+* The applet framework involves two entities:
+* the applet and the applet context. An applet is an embeddable window (see the
+* {@link java.awt.Panel} class) with a few extra methods that the applet context
+* can use to initialize, start, and stop the applet.
+*
+* @since 1.0
+* @see java.awt
+*/
+package java.lang.applet;
+....
+
+
+== 文档标记 - 类型
+
+块标记（block tags）::
+注释符号（*）后独立成行，放在文档注释描述部分后面，与描述部分之间需要有使用空行隔开，以 `@` 开头，例如：`@author`。一些标记可以重复出现。
+
+内嵌标记（inline tags）::
+可以嵌入在文档注释中的描述部分或块标记的描述部分， 必须使用大括号包裹，例如：`{@link xxx}`
+
+== 文档标记 - 描述
+
+=== `@author` 作者
+
+* 标记作者，可以是邮箱或者超链接
+* 注意事项
+** 有多少个作者就有多个行标签
+** 无名氏可以使用 `@author unascribed`
+* 例子
++
+[source,java]
+....
+// 纯文本作者
+@author Steve Johnson
+
+// 纯文本组织
+@author Apache Software Foundation
+
+// 纯文本邮箱
+@author shane_curcuru@us.ibm.com
+
+// 纯文本作者 + 邮箱
+@author Igor Hersht, igorh@ca.ibm.com
+
+// 纯文本作者 + 超链接邮箱
+@author <a href="mailto:ovidiu@cup.hp.com">Ovidiu Predescu</a>
+
+// 纯文本组织 + 超链接组织地址
+@author <a href="https://jakarta.apache.org/turbine"> Apache Jakarta Turbine</a>
+....
+
+
+
+=== `@since` `@version` 版本
+
+* `@version` 指明当前版本号
+* `@since` 指明最早出现在哪个版本（引入版本），可填写版本号或日期，有时也可表明可运行的 JDK 版本
+* 注意事项
+* `@version` 标记在类、接口上，`@since` 无限制
+* 查看了 jdk8、spring、springboot、guava 等源码发现，`@version` 极不常用，一般都是使用 `@since` 标记起始版本
+* https://www.baeldung.com/javadoc-version-since[@version 与 @since 区别]
+* 例子
++
+[source,java]
+....
+@since 1.4
+@since JDK1.5
+@since 15 April 2001
+
+@version 1.8.2.3
+....
+
++
+
+
+=== `@param` 参数
+
+* 方法参数
+* 注意事项
+** 先参数名，后参数描述，并以空格分隔
+** 有几个参数就有几个标记
+** 参数标记顺序与方法参数定义顺序一致
+* 例子
++
+[source,java]
+....
+/**
+* @param  url  an absolute URL giving the base location of the image
+* @param  name the location of the image, relative to the url argument
+*/
+public Image getImage(URL url, String name) {}
+....
++
+
+
+=== `@return` 返回值
+
+* 函数返回类型及解释
+* 注意事项：有返回值时必须包含此标记
+* 例子
++
+[source,java]
+....
+/**
+* @return the image at the specified URL
+*/
+public Image getImage(URL url, String name) {}
+....
++
+
+
+=== `@exception` `@throws` 异常
+
+* 描述抛出异常类型及情况，两者功能相同
+* 例子
++
+[source,java]
+....
+@exception IOException If an input or output exception occurred
+@throws IllegalArgumentException When the given source contains invalid encoded sequences
+....
++
+
+
+=== `@see` `{@link}` `{@linkplain}` 链接
+* 源代码类、方法间的链接（引用）
+* 链接（引用）格式
+** `包名.类名#方法名(参数类型列表)`
+** 当前类引用可省略包名、类名 `#方法名(参数类型列表)`
+* `@see` 是块标记，单独成行
+* `{@link }`, `{@linkplain }` 是内嵌标记，可以放在文档注释的任何位置
+* 内嵌引用使用格式
+** `{@link 引用}`
+** `{@linkplain 引用 别名}`
+* 例子
++
+[source,java]
+....
+// 完整格式
+{@link java.lang.String#charAt(int)}
+
+// 省略包名
+{@link String}
+
+// 省略包名和类名，表示指向当前的某个方法
+{@link #length()}
+
+// @link
+此实现继承了{@link com.service.BaseManagerImpl}，以复用其中的dao接口。
+// 显示结果：此实现继承了com.service.BaseManagerImpl，以复用其中的dao接口。
+
+// @linkplain
+使用方法与{@linkplain com.common.web.SimpleDBAction SimpleDBAction}基本一致
+// 显示结果：使用方法与SimpleDBAction基本一致
+
+// @see
+@see DoubleStream // 正确使用
+related usage can be checked on @see DoubleStream // 错误使用
+....
++
+
+
+
+=== `@serial` `@serialField` `@serialData` 序列化
+
+* 不常用
+* 详见：link:https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html#CHDHDECF[@serial field-description | include | exclude (oracle.com)]
+
+
+
+=== `@deprecated` 废弃
+* 标记当前 API 已过时，不推荐使用
+* 建议
+** 可简要说明废弃原因
+** 使用 `@see`, `{@link }` 指向新的 API 或替代方案
+* 例子
++
+[source,java]
+....
+/**
+* @deprecated As of JDK 1.1, replaced by {@link #setBounds(int, int, int, int)}
+*/
+....
++
+
+
+=== `{@code}` `{@snippet}` 代码片段
+
+* 将关键字或代码解析为代码样式
+** 可以与 `<pre></pre>` 标签搭配使用显示代码块
+** java18 新增了 `@sinppet` 标签显示代码块（片段）
+* 注意事项，以下必须使用此标签
+** Java keywords. Java 关键字
+** package names. 包名
+** class names. 类名
+** method names. 方法名
+** interface names. 接口名
+** field names. 字段名
+** argument names. 参数名
+** code examples. 代码示例
+* 例子
++
+[source,java]
+....
+/**
+* The following code shows how to use {@code Optional.isPresent}:
+* <pre>{@code
+* if (v.isPresent()) {
+*     System.out.println("v: " + v.get());
+* }
+* }</pre>
+*/
+
+/**
+* The following code shows how to use {@code Optional.isPresent}:
+* {@snippet :
+* if (v.isPresent()) {
+*     System.out.println("v: " + v.get());
+* }
+* }
+*/
+....
+
++
+
+
+=== `{@value}` 值
+
+* 对**常量**进行注释，显示起值
+** 格式：`{@value #常量名}`
+* 例子
++
+[source,java]
+....
+/**
+*   Default delimiter. {@value #DEFAULT_LIST_SEPARATOR}
+*/
+public final static String DEFAULT_LIST_SEPARATOR = ",";
+
+/**
+* Default start value. {@value #START_VALUE}
+*/
+public final static int START_VALUE = 20000;
+
+....
++
+
+
+=== `{@inheritDoc}` 注释继承
+
+* 说明：继承父类的 javadoc 注释，父类注释会被拷贝到子类中
+* 注意事项
+** 该标签可以放于描述部分。对应地，父类注释中的描述部分会被拷贝到子类的描述部分
+** 该标签还可以放于 @return, @param, @throws 文档标签中。对应地，父类注释中的文档标签会被拷贝到子类的文档标签
+** 当描述部分或者文档标记部分缺失时，不需要 `{@inheritDoc}` 标签，父类的Javadoc文档注释会被自动拷贝到子类对应缺失的部分
+* 例子
++
+[source,java]
+....
+public interface animal {
+    /**
+     * An animal is running.
+     * <p>
+     * The speed of ANIMAL will be returned.
+     *
+     * @return the speed of ANIMAL
+     */
+    public int run();
+}
+
+public class tiger implements animal {
+
+    /**
+     * {@inheritDoc}
+     * <p>
+     * The speed of TIGER will be returned.
+     *
+     * @return the speed of TIGER
+     */
+    @Override
+    public int run() {
+        System.out.println("The TIGER is running.");
+		return 150;
+    }
+
+}
+
+public class Monkey implements animal {
+
+    /**
+     *
+     * The speed of MONKEY will be returned.
+     *
+     * @return {@inheritDoc}
+     */
+    @Override
+    public int run() {
+        System.out.println("The MONKEY is running.");
+		return 150;
+    }
+
+}
+....
++
+
+
+=== `{@literal}` 保持原文本
+
+* 显示原始文本而不将文本解释为 HTML 标签或嵌套的 javadoc 标签
+* 例如：可以用来显示左右尖括号 `{@literal A <B> C}`
+
+
+== 文档标记 - 顺序
+. `@author` (classes and interfaces only, required)
+. `@version` (classes and interfaces only, required)
+. `@param` (methods and constructors only)
+. `@return` (methods only)
+. `@exception` (@throws is a synonym added in Javadoc 1.2)
+. `@see`
+. `@since`
+. `@serial` (or @serialField or @serialData)
+. `@deprecated`
+
+== HTML 常用标签
+* `<p></p>` 段落
+* `<ul><li></li><li></li></ul>` 无序列表
+* `<a href="xxx">xxx</a>` 超链接
+* `<pre></pre>` 与格式化文本
+* `<code></code>` 代码文本
+* `<b></b>` 加粗样式
+* `<em></em>` 斜体样式
+* `<br/>` 折行
+* `<sup></sup>` 右上角标
+
+== 例子
+* https://gitee.com/apache/commons-lang/blob/master/src/main/java/org/apache/commons/lang3/StringUtils.java[org.apache.commons.lang3.StringUtils]
+* https://gitee.com/mirrors/openjdk/blob/master/src/java.base/share/classes/java/util/ArrayList.java[java.util.ArrayList]
+
+== 参考资料
+* https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html[How to Write Doc Comments for the Javadoc Tool (oracle.com)]
+* https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html[javadoc (oracle.com)]
