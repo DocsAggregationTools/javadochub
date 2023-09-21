@@ -22,12 +22,12 @@
 [source,java]
 ....
 /**
-* 描述部分：description. 用一句话或者一段话简要描述该类的作用，以英文句号结束
+* 描述部分(description): 用一句话或者一段话简要描述该类的作用，以英文句号结束
 * 这句话会被提取并放到索引目录中. javadoc 工具不识别中文句号. 当识别到第一个英文句号时，
 * 系统会自动认为概要描述已经结束，紧接其后的话都不会被放到概要中. 描述中可以使用
 * html 标签，如 `<p></p>` `<pre></pre>` `<a></a>` `<li></li>`
 * 空行
-* 标记部分：block tags. 例如：@see @return 等
+* 标记部分(block tags): 例如：@see @return 等
 */
 ....
 
@@ -399,11 +399,3 @@ public class Monkey implements animal {
 * `<em></em>` 斜体样式
 * `<br/>` 折行
 * `<sup></sup>` 右上角标
-
-== 例子
-* https://gitee.com/apache/commons-lang/blob/master/src/main/java/org/apache/commons/lang3/StringUtils.java[org.apache.commons.lang3.StringUtils]
-* https://gitee.com/mirrors/openjdk/blob/master/src/java.base/share/classes/java/util/ArrayList.java[java.util.ArrayList]
-
-== 参考资料
-* https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html[How to Write Doc Comments for the Javadoc Tool (oracle.com)]
-* https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html[javadoc (oracle.com)]

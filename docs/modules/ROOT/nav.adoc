@@ -1,3 +1,6 @@
 * xref:index.adoc[]
+* xref:selfhost.adoc[]
 * xref:javadoc.adoc[]
 * xref:example.adoc[]
+* xref:tool.adoc[]
+* xref:reference.adoc[]

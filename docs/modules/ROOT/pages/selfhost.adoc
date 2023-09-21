@@ -1,0 +1,55 @@
+= 安装部署
+
+== jar
+
+* 下载 JavadocHub-linux.tar.gz
+
+[source,bash]
+....
+tar -xzvf JavadocHub-linux.tar.gz
+cd JavadocHub
+
+# 根据情况修改 application.yaml
+vi application.yaml
+
+sh start.sh
+sh stop.sh
+....
+
+
+== docker
+
+* upcoming
+
+== 自编译
+
+环境信息
+
+* jdk 1.8
+* maven 3
+
+代码
+
+[source,bash]
+....
+git clone https://github.com/DocsAggregationTools/javadochub.git
+cd javadochub
+....
+
+编译
+
+[source,bash]
+....
+mvn clean package
+....
+
+启动
+
+[source,bash]
+....
+java -jar target/javadochub.jar
+....
+
+访问
+
+http://localhost:8086
