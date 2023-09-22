@@ -78,7 +78,7 @@ public class JavadocController {
         return modelView;
     }
 
-    private ModelAndView extract(ModelAndView modelView,
+    private void extract(ModelAndView modelView,
         String groupId, String artifactId, String version, String page) throws IOException {
 
         log.info("extract javadoc. g={} a={} v={} p={}", groupId, artifactId, version, page);
@@ -96,7 +96,6 @@ public class JavadocController {
 
         repository.store(groupId, artifactId, version);
 
-        return modelView;
     }
 
 }
