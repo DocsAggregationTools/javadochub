@@ -84,7 +84,7 @@ public class JavadocController {
         log.info("extract javadoc. g={} a={} v={} p={}", groupId, artifactId, version, page);
 
         Versioning versioning = repository.version(groupId, artifactId);
-        version = StringUtils.isEmpty(version) ? versioning.getRelease() : version;
+        version = StringUtils.isEmpty(version) || "latest".equals(version) ? versioning.getRelease() : version;
 
         modelView.addObject("groupId", groupId)
                  .addObject("artifactId", artifactId)
