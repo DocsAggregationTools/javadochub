@@ -12,6 +12,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -58,7 +60,7 @@ public class Repository implements CommandLineRunner {
     }
 
     /**
-     * artifact name list.
+     * local artifact name list.
      *
      * @author weibiansanjue
      * @param groupId group id
@@ -110,22 +112,32 @@ public class Repository implements CommandLineRunner {
      * @param groupId group id
      * @param artifactId artifact id
      * @param version version
+     * @return status
      * @throws IOException io exception
      * @since 1.0.0
      */
-    public void store(String groupId, String artifactId, String version) throws IOException {
+    public int store(String groupId, String artifactId, String version) throws IOException {
         File docFile = Paths.get(LOCAL_PATH + File.separator + groupId + File.separator + artifactId + File.separator + version).toFile();
         if (docFile.exists()) {
-            return;
+            return 202;
         }
 
         String rep = repositoryUrl(groupId);
         String jarName = artifactId + "-" + version + "-javadoc.jar";
         String url = String.format("%s/%s/%s/%s/%s", rep, groupId.replace(".", "/"), artifactId, version, jarName);
         log.info("download javadoc. url={}", url);
-        ResponseEntity<byte[]> resp = restTemplate.getForEntity(url, byte[].class);
+        ResponseEntity<byte[]> resp = null;
+        try {
+            resp = restTemplate.getForEntity(url, byte[].class);
+        } catch (HttpClientErrorException hcee) {
+            log.error("javadoc 下载失败. hcee={}", hcee.getMessage());
+            return hcee.getRawStatusCode();
+        } catch (Exception e) {
+            log.error("javadoc 下载失败. e={}", e.getMessage());
+            return 500;
+        }
         if (!resp.getStatusCode().is2xxSuccessful()) {
-            return;
+            return 500;
         }
         Path versionPath = Paths.get(JAR_PATH + File.separator + groupId + File.separator + artifactId + File.separator + version);
         Path jarPath = versionPath.resolve(jarName);
@@ -136,6 +148,7 @@ public class Repository implements CommandLineRunner {
         Extractor extractor = CompressUtil.createExtractor(StandardCharsets.UTF_8, jarPath.toFile());
         extractor.extract(docFile);
         log.info("discompress javadoc jar. local_path={}", docFile.getAbsolutePath());
+        return 202;
     }
 
     private String repositoryUrl(String groupId) {

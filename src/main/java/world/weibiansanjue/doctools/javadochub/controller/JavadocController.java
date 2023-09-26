@@ -94,8 +94,8 @@ public class JavadocController {
                  .addObject("page", page)
                  .setViewName("doc");
 
-        repository.store(groupId, artifactId, version);
-
+        int status = repository.store(groupId, artifactId, version);
+        modelView.addObject("status", status);
     }
 
 }
