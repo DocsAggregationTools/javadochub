@@ -11,10 +11,10 @@ services:
     environment:
       # maven 公共仓库，必填，默认 https://repo.maven.apache.org/maven2
       javadochub.maven.repository: https://repo.maven.apache.org/maven2
-       # maven 私有仓库，选填
+      # maven 私有仓库，选填
 #      javadochub.maven.internal:
-       # 私有仓库私有包 group 前缀，填写私有仓库则必填此项，多个使用逗号分割
-       # 例如 world.weibiansanjue,com.weibiansanjue
+      # 私有仓库私有包 group 前缀，填写私有仓库则必填此项，多个使用逗号分割
+      # 例如 world.weibiansanjue,com.weibiansanjue
 #      javadochub.maven.internal-group-prefix:
 
 volumes:

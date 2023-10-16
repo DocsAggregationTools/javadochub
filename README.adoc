@@ -28,3 +28,11 @@ java -jar javadochub.jar
 访问
 
 http://localhost:8086
+
+=== docker
+
+[source,shell]
+....
+docker build --platform linux/amd64 -t javadochub:f60ba70 .
+
+....
