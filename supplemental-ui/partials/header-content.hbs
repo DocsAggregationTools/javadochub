@@ -16,8 +16,8 @@
         </div>
       </div>
       {{/if}}
-
     </div>
+
     <div id="topbar-nav" class="navbar-menu">
         <div class="navbar-item hide-for-print">
             <div id="group-id" class="field">
@@ -33,22 +33,21 @@
         </div>
         <div class="navbar-item">
           <span class="control">
-              <button class="button" data-target="topbar-nav"
-                      onclick="toJavadoc()" >
+              <button class="button" data-target="topbar-nav" onclick="toJavadoc()" >
                 查看
               </button>
           </span>
         </div>
-      </div>
     </div>
-      <script type="text/javascript">
-          function toJavadoc() {
-              let groupId = document.getElementById('group-input').value;
-              let artifactId = document.getElementById('artifact-input').value;
-              if (groupId != '' && artifactId != '') {
-                  window.open('/doc/' + groupId + '/' + artifactId + '/', '_blank');
-              }
-          }
-      </script>
+
+    <script type="text/javascript">
+        function toJavadoc() {
+            let groupId = document.getElementById('group-input').value;
+            let artifactId = document.getElementById('artifact-input').value;
+            if (groupId != '' && artifactId != '') {
+                window.open('/doc/' + groupId + '/' + artifactId + '/', '_blank');
+            }
+        }
+    </script>
   </nav>
 </header>

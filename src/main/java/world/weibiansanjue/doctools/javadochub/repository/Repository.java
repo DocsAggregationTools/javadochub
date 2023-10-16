@@ -123,14 +123,16 @@ public class Repository implements CommandLineRunner {
      * @since 1.0.0
      */
     public int store(String groupId, String artifactId, String version) throws IOException {
-        File docFile = Paths.get(LOCAL_PATH + File.separator + groupId + File.separator + artifactId + File.separator + version).toFile();
+        File docFile = Paths.get(LOCAL_PATH + File.separator +
+            groupId + File.separator + artifactId + File.separator + version).toFile();
         if (docFile.exists()) {
             return 202;
         }
 
         String rep = repositoryUrl(groupId);
         String jarName = artifactId + "-" + version + "-javadoc.jar";
-        String url = String.format("%s/%s/%s/%s/%s", rep, groupId.replace(".", "/"), artifactId, version, jarName);
+        String url = String.format("%s/%s/%s/%s/%s",
+            rep, groupId.replace(".", "/"), artifactId, version, jarName);
         log.info("download javadoc. url={}", url);
         ResponseEntity<byte[]> resp = null;
         try {
@@ -145,7 +147,8 @@ public class Repository implements CommandLineRunner {
         if (!resp.getStatusCode().is2xxSuccessful()) {
             return 500;
         }
-        Path versionPath = Paths.get(JAR_PATH + File.separator + groupId + File.separator + artifactId + File.separator + version);
+        Path versionPath = Paths.get(JAR_PATH + File.separator +
+            groupId + File.separator + artifactId + File.separator + version);
         Path jarPath = versionPath.resolve(jarName);
         versionPath.toFile().mkdirs();
         Files.write(jarPath, resp.getBody());
