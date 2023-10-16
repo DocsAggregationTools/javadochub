@@ -1,9 +1,97 @@
-# Javadoc 编写示例
+= Javadoc 编写示例
 
+== 包
 
-## openJDK jdk8-b120
+=== java.lang.package-info
 
-java.util.ArrayList.java
+* link:https://github.com/openjdk/jdk/tree/jdk8-b120[openJDK jdk8-b120]
+* link:https://github.com/openjdk/jdk/blob/jdk8-b120/jdk/src/share/classes/java/lang/package-info.java[java.lang.package-info.java]
+
+[source,java]
+....
+/**
+ * Provides classes that are fundamental to the design of the Java
+ * programming language. The most important classes are {@code
+ * Object}, which is the root of the class hierarchy, and {@code
+ * Class}, instances of which represent classes at run time.
+ *
+ * <p>Frequently it is necessary to represent a value of primitive
+ * type as if it were an object. The wrapper classes {@code Boolean},
+ * {@code Character}, {@code Integer}, {@code Long}, {@code Float},
+ * and {@code Double} serve this purpose.  An object of type {@code
+ * Double}, for example, contains a field whose type is double,
+ * representing that value in such a way that a reference to it can be
+ * stored in a variable of reference type.  These classes also provide
+ * a number of methods for converting among primitive values, as well
+ * as supporting such standard methods as equals and hashCode.  The
+ * {@code Void} class is a non-instantiable class that holds a
+ * reference to a {@code Class} object representing the type void.
+ *
+ * <p>The class {@code Math} provides commonly used mathematical
+ * functions such as sine, cosine, and square root. The classes {@code
+ * String}, {@code StringBuffer}, and {@code StringBuilder} similarly
+ * provide commonly used operations on character strings.
+ *
+ * <p>Classes {@code ClassLoader}, {@code Process}, {@code
+ * ProcessBuilder}, {@code Runtime}, {@code SecurityManager}, and
+ * {@code System} provide "system operations" that manage the dynamic
+ * loading of classes, creation of external processes, host
+ * environment inquiries such as the time of day, and enforcement of
+ * security policies.
+ *
+ * <p>Class {@code Throwable} encompasses objects that may be thrown
+ * by the {@code throw} statement. Subclasses of {@code Throwable}
+ * represent errors and exceptions.
+ *
+ * <a name="charenc"></a>
+ * <h3>Character Encodings</h3>
+ *
+ * The specification of the {@link java.nio.charset.Charset
+ * java.nio.charset.Charset} class describes the naming conventions
+ * for character encodings as well as the set of standard encodings
+ * that must be supported by every implementation of the Java
+ * platform.
+ *
+ * @since JDK1.0
+ */
+package java.lang;
+....
+
+== 类
+
+=== java.lang.Object
+
+* link:https://github.com/openjdk/jdk/tree/jdk8-b120[openJDK jdk8-b120]
+* link:https://github.com/openjdk/jdk/blob/jdk8-b120/jdk/src/share/classes/java/lang/Object.java[java.lang.Object.java]
+
+[source,java]
+....
+/**
+ * Class {@code Object} is the root of the class hierarchy.
+ * Every class has {@code Object} as a superclass. All objects,
+ * including arrays, implement the methods of this class.
+ *
+ * @author  unascribed
+ * @see     java.lang.Class
+ * @since   JDK1.0
+ */
+public class Object {
+
+    private static native void registerNatives();
+    static {
+        registerNatives();
+    }
+    // ......
+    // ......
+}
+....
+
+== 方法
+
+=== ArrayList#contains
+
+* link:https://github.com/openjdk/jdk/tree/jdk8-b120[openJDK jdk8-b120]
+* link:https://github.com/openjdk/jdk/blob/jdk8-b120/jdk/src/share/classes/java/util/ArrayList.java#L284[java.util.ArrayList#contains]
 
 [source,java]
 ....
@@ -22,10 +110,10 @@ public boolean contains(Object o) {
 ....
 
 
+=== StringUtils#isEmpty
 
-## org.apache.commons:commons-lang3:3.13.0
-
-org.apache.commons.lang3.StringUtils.java
+* link:https://github.com/apache/commons-lang/tree/rel/commons-lang-3.13.0[org.apache.commons:commons-lang3:3.13.0]
+* link:https://github.com/apache/commons-lang/blob/rel/commons-lang-3.13.0/src/main/java/org/apache/commons/lang3/StringUtils.java#L3596[org.apache.commons.lang3.StringUtils#isEmpty]
 
 [source,java]
 ....
@@ -51,4 +139,43 @@ org.apache.commons.lang3.StringUtils.java
 public static boolean isEmpty(final CharSequence cs) {
     return cs == null || cs.length() == 0;
 }
+....
+
+== 属性
+
+=== Integer#MAX_VALUE
+
+* link:https://github.com/openjdk/jdk/tree/jdk8-b120[openJDK jdk8-b120]
+* link:https://github.com/openjdk/jdk/blob/jdk8-b120/jdk/src/share/classes/java/lang/Integer.java#L63[java.lang.Integer#MAX_VALUE]
+
+[source,java]
+....
+    /**
+     * A constant holding the maximum value an {@code int} can
+     * have, 2<sup>31</sup>-1.
+     */
+    @Native public static final int   MAX_VALUE = 0x7fffffff;
+....
+
+
+=== StringUtils#SPACE, EMPTY
+
+* link:https://github.com/apache/commons-lang/tree/rel/commons-lang-3.13.0[org.apache.commons:commons-lang3:3.13.0]
+* link:https://github.com/apache/commons-lang/blob/rel/commons-lang-3.13.0/src/main/java/org/apache/commons/lang3/StringUtils.java#L148[org.apache.commons.lang3.StringUtils#SPACE, EMPTY]
+
+
+[source,java]
+....
+    /**
+     * A String for a space character.
+     *
+     * @since 3.2
+     */
+    public static final String SPACE = " ";
+
+    /**
+     * The empty String {@code ""}.
+     * @since 2.0
+     */
+    public static final String EMPTY = "";
 ....

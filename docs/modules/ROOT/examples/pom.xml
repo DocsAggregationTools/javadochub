@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.15</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>world.weibiansanjue.doctools</groupId>
+    <artifactId>javadochub</artifactId>
+    <version>0.1.0</version>
+    <packaging>jar</packaging>
+    <name>JavadocHub</name>
+    <description>轻量级 Javadoc 聚合、托管服务</description>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
+    <dependencies>
+
+    </dependencies>
+
+    <build>
+       <plugins>
+
+<!-- javadoc -->
+<!-- tag::maven-javadoc-plugin[] -->
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-javadoc-plugin</artifactId>
+    <version>3.5.0</version>
+    <configuration>
+        <encoding>UTF-8</encoding>
+        <charset>UTF-8</charset>
+        <docencoding>UTF-8</docencoding>
+    </configuration>
+    <executions>
+        <execution>
+            <id>generate-javadoc-jar</id>
+            <phase>package</phase>
+            <goals>
+                <goal>${project.packaging}</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+<!-- end::maven-javadoc-plugin[] -->
+
+<!-- src/main/javadoc/overivew.md -> html -->
+<!-- tag::markdown-page-generator-plugin[] -->
+<plugin>
+    <groupId>com.ruleoftech</groupId>
+    <artifactId>markdown-page-generator-plugin</artifactId>
+    <version>2.4.0</version>
+    <executions>
+        <execution>
+            <phase>process-resources</phase>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+        </execution>
+    </executions>
+    <configuration>
+        <inputDirectory>${basedir}/src/main/javadoc</inputDirectory>
+        <outputDirectory>${basedir}/src/main/javadoc</outputDirectory>
+        <inputEncoding>UTF-8</inputEncoding>
+        <outputEncoding>UTF-8</outputEncoding>
+    </configuration>
+</plugin>
+<!-- end::markdown-page-generator-plugin[] -->
+
+        </plugins>
+    </build>
+
+</project>

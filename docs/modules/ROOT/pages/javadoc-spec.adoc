@@ -31,51 +31,6 @@
 */
 ....
 
-=== 示例
-.类 文档
-[source,java]
-....
-/**
-* Returns an Image object that can then be painted on the screen.
-* The url argument must specify an absolute <a href="#{@link}">{@link URL}</a>.
-* The name argument is a specifier that is relative to the url argument.
-* <p>
-* This method always returns immediately, whether or not the
-* image exists. Wh  en this applet attempts to draw the image on
-* the screen, the data will be loaded. The graphics primitives
-* that draw the image will incrementally paint on the screen.
-*
-* @param  url  an absolute URL giving the base location of the image
-* @param  name the location of the image, relative to the url argument
-* @return the image at the specified URL
-* @see Image
-*/
-public Image getImage(URL url, String name) {
-    try {
-        return getImage(new URL(url, name));
-    } catch (MalformedURLException e) {
-        return null;
-    }
-}
-....
-
-.包 文档
-[source,java]
-....
-/**
-* Provides the classes necessary to create an applet and the classes an applet uses
-* to communicate with its applet context.
-* <p>
-* The applet framework involves two entities:
-* the applet and the applet context. An applet is an embeddable window (see the
-* {@link java.awt.Panel} class) with a few extra methods that the applet context
-* can use to initialize, start, and stop the applet.
-*
-* @since 1.0
-* @see java.awt
-*/
-package java.lang.applet;
-....
 
 
 == 文档标记 - 类型

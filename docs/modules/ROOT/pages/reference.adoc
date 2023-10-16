@@ -2,3 +2,5 @@
 
 * https://www.oracle.com/technical-resources/articles/java/javadoc-tool.html[How to Write Doc Comments for the Javadoc Tool (oracle.com)]
 * https://docs.oracle.com/javase/8/docs/technotes/tools/windows/javadoc.html[javadoc (oracle.com)]
+
+* https://checkstyle.sourceforge.io/reports/google-java-style-20170228.html#s7-javadoc[Google Java Style Guide Javadoc]

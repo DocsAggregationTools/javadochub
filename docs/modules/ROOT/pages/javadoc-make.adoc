@@ -1,0 +1,26 @@
+= 制作 javadoc
+
+== CLI
+
+TODO
+
+== IDE
+
+TODO
+
+== maven
+
+DOING
+
+[source,xml]
+....
+include::example$pom.xml[tag=maven-javadoc-plugin]
+....
+
+== 自定义概述(overview)页 footnote:[https://stackoverflow.com/questions/25947627/how-to-customize-overview-page-in-javadoc[java - How to customize "Overview" page in JavaDoc? - Stack Overflow]]
+
+
+[source,xml]
+....
+include::example$pom.xml[tag=markdown-page-generator-plugin]
+....

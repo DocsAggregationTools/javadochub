@@ -20,7 +20,9 @@ content:
 asciidoc:
   attributes:
     # 文本画图渲染服务 kroki 地址
-#    kroki-server-url: http://172.16.30.158:9500
+#    kroki-server-url: https://kroki.io/
+    # 当前 javadochub 服务地址
+    page-javadochub-url: http://ip:port/doc
     # tab 标签联动
     tabs-sync-option: ''
     # 前页（Prev）、后页（Next）
