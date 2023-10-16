@@ -86,7 +86,6 @@ public class JavadocController {
         modelView.addObject("groupId", groupId)
             .addObject("artifactId", artifactId)
             .addObject("artifactIds", repository.artifact(groupId))
-            .addObject("version", version)
             .addObject("page", page)
             .setViewName("doc");
 
@@ -97,7 +96,8 @@ public class JavadocController {
             return;
         }
         version = StringUtils.isEmpty(version) || "latest".equals(version) ? versioning.getRelease() : version;
-        modelView.addObject("versions", versioning.getVersions());
+        modelView.addObject("version", version)
+            .addObject("versions", versioning.getVersions());
 
         int status = repository.store(groupId, artifactId, version);
         modelView.addObject("status", status);
