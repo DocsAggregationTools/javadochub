@@ -93,9 +93,15 @@ public class Repository implements CommandLineRunner {
         String url = String.format("%s/%s/%s/%s", rep, groupId.replace(".", "/"), artifactId, "maven-metadata.xml");
         log.info("remote version. url={}", url);
 
-        ResponseEntity<Metadata> resp = restTemplate.getForEntity(url, Metadata.class);
+        ResponseEntity<Metadata> resp = null;
+        try {
+            resp = restTemplate.getForEntity(url, Metadata.class);
+        } catch (HttpClientErrorException hcee) {
+            log.error("javadoc version 列表获取失败. hcee={}", hcee.getMessage());
+            return null;
+        }
         if (!resp.getStatusCode().is2xxSuccessful()) {
-            return new Versioning();
+            return null;
         }
         Versioning versioning = resp.getBody().getVersioning();
         Collections.reverse(versioning.getVersions());

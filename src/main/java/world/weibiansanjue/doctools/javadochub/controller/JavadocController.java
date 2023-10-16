@@ -83,16 +83,21 @@ public class JavadocController {
 
         log.info("extract javadoc. g={} a={} v={} p={}", groupId, artifactId, version, page);
 
-        Versioning versioning = repository.version(groupId, artifactId);
-        version = StringUtils.isEmpty(version) || "latest".equals(version) ? versioning.getRelease() : version;
-
         modelView.addObject("groupId", groupId)
-                 .addObject("artifactId", artifactId)
-                 .addObject("artifactIds", repository.artifact(groupId))
-                 .addObject("version", version)
-                 .addObject("versions", versioning.getVersions())
-                 .addObject("page", page)
-                 .setViewName("doc");
+            .addObject("artifactId", artifactId)
+            .addObject("artifactIds", repository.artifact(groupId))
+            .addObject("version", version)
+            .addObject("page", page)
+            .setViewName("doc");
+
+        Versioning versioning = repository.version(groupId, artifactId);
+        if (null == versioning) {
+            modelView.addObject("version", null == version ? "latest" : version)
+                .addObject("status", 404);
+            return;
+        }
+        version = StringUtils.isEmpty(version) || "latest".equals(version) ? versioning.getRelease() : version;
+        modelView.addObject("versions", versioning.getVersions());
 
         int status = repository.store(groupId, artifactId, version);
         modelView.addObject("status", status);

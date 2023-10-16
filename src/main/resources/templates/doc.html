@@ -74,6 +74,7 @@
       th:src="|/${groupId}/${artifactId}/${version}/${page}|" >
     </iframe>
     <h1 th:if="${status == 404}" align="center">😅 javadoc 不存在</h1>
+    <h1 th:if="${status != 404 && status != 202}" align="center">😅 javadoc 加载失败，请重试</h1>
   </div>
 
 </div>
