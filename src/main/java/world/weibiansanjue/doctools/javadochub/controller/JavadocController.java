@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * javadoc 获取.
+ * javadoc 获取控制器.
  *
  * @author weibiansanjue
  * @since 1.0.0

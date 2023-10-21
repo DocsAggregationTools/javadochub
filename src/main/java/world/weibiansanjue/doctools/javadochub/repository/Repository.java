@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 仓库.
+ * 仓库操作.
  *
  * @author weibiansanjue
  * @since 1.0.0
@@ -60,7 +60,7 @@ public class Repository implements CommandLineRunner {
     }
 
     /**
-     * local artifact name list.
+     * 获取本地 artifact 名词集合.
      *
      * @author weibiansanjue
      * @param groupId group id
@@ -80,7 +80,7 @@ public class Repository implements CommandLineRunner {
     }
 
     /**
-     * remote version list.
+     * 获取 maven 仓库中 javadoc 版本.
      *
      * @author weibiansanjue
      * @param groupId group id
@@ -112,7 +112,7 @@ public class Repository implements CommandLineRunner {
     }
 
     /**
-     * download and discompress javadoc.
+     * 下载、解压 javadoc.jar.
      *
      * @author weibiansanjue
      * @param groupId group id

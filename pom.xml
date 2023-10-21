@@ -222,6 +222,48 @@
                 </executions>
             </plugin>
 
+            <!-- javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.5.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <charset>UTF-8</charset>
+                    <docencoding>UTF-8</docencoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>generate-javadoc-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>${project.packaging}</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- src/main/javadoc/overivew.md -> html -->
+            <plugin>
+                <groupId>com.ruleoftech</groupId>
+                <artifactId>markdown-page-generator-plugin</artifactId>
+                <version>2.4.0</version>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <inputDirectory>${basedir}/src/main/javadoc</inputDirectory>
+                    <outputDirectory>${basedir}/src/main/javadoc</outputDirectory>
+                    <inputEncoding>UTF-8</inputEncoding>
+                    <outputEncoding>UTF-8</outputEncoding>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 

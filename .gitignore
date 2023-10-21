@@ -1,4 +1,5 @@
 
+src/main/javadoc/overview.html
 src/main/resources/application-dev.yaml
 src/main/resources/static/help/
 node/
