@@ -30,6 +30,11 @@ public class JavadocController {
     @Autowired
     private Repository repository;
 
+    @GetMapping(value = "/doc")
+    public String redirectHelp() {
+        return "redirect:/";
+    }
+
     /**
      * 通过 groupId, artifactId 获取 javadoc.
      *
