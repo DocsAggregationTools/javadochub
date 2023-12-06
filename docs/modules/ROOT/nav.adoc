@@ -1,8 +1,17 @@
-* xref:index.adoc[快速开始]
-* xref:selfhost.adoc[]
-* xref:javadoc-spec.adoc[]
-* xref:javadoc-spec.adoc[]
-* xref:example.adoc[]
-* xref:javadoc-make.adoc[]
+
+* xref:start.adoc[]
+
+* JavadocHub
+** xref:selfhost.adoc[]
+
+* Javadoc 编写
+** xref:javadoc-spec.adoc[]
+** xref:javadoc-spec.adoc[]
+** xref:example.adoc[]
+** xref:javadoc-make.adoc[]
+
 * xref:tool.adoc[]
+
 * xref:reference.adoc[]
+
+* xref:changelog.adoc[]

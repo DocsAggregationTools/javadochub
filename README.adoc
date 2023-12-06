@@ -33,6 +33,7 @@ http://localhost:8086
 
 [source,shell]
 ....
-docker build --platform linux/amd64 -t javadochub:f60ba70 .
+mvn clean package
+docker build --platform linux/amd64 -t javadochub:${tag} .
 
 ....
