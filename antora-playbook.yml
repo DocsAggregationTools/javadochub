@@ -12,8 +12,8 @@ content:
   edit_url: '{web_url}/blob/{refname}/{path}'
   sources:
   # 本项目文档
-  - url: .
-    branches: HEAD
+  - url: https://github.com/DocsAggregationTools/javadochub.git
+    branches: develop
     start_path: docs
 
 
