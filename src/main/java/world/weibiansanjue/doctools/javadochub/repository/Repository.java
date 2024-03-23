@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -112,6 +113,27 @@ public class Repository implements CommandLineRunner {
     }
 
     /**
+     * 删除 javadoc page
+     *
+     * @author weibiansanjue
+     * @param groupId group id
+     * @param artifactId artifact id
+     * @param version version
+     * @return 删除成功
+     * @throws IOException io e
+     * @since 0.2.0
+     */
+    public boolean delete(String groupId, String artifactId, String version) throws IOException {
+        Path docFile = Paths.get(LOCAL_PATH + File.separator +
+                groupId + File.separator + artifactId + File.separator + version);
+        Files.walk(docFile)
+                .sorted(Comparator.reverseOrder())
+                .map(Path::toFile)
+                .forEach(File::delete);
+        return true;
+    }
+
+    /**
      * 下载、解压 javadoc.jar.
      *
      * @author weibiansanjue
@@ -157,6 +179,7 @@ public class Repository implements CommandLineRunner {
         Extractor extractor = CompressUtil.createExtractor(StandardCharsets.UTF_8, jarPath.toFile());
         extractor.extract(docFile);
         log.info("discompress javadoc jar. local_path={}", docFile.getAbsolutePath());
+        Files.delete(jarPath);
         return 202;
     }
 

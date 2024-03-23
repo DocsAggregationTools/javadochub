@@ -27,6 +27,8 @@ public class JavadocController {
     private static final String URL_GA   = "/doc/{groupId}/{artifactId}";
     private static final String URL_PAGE = "/doc/{groupId}/{artifactId}/{version}/**";
 
+    private static final String INDEX_PAGE = "overview-summary.html";
+
     @Autowired
     private Repository repository;
 
@@ -51,7 +53,7 @@ public class JavadocController {
                                       @PathVariable("groupId")    String groupId,
                                       @PathVariable("artifactId") String artifactId) throws IOException {
 
-        extract(modelView, groupId, artifactId, null, "overview-summary.html");
+        extract(modelView, groupId, artifactId, null, INDEX_PAGE);
 
         return modelView;
     }
@@ -77,7 +79,7 @@ public class JavadocController {
                                       HttpServletRequest          request) throws IOException {
 
         String page = new AntPathMatcher().extractPathWithinPattern(URL_PAGE, request.getServletPath());
-        page = StringUtils.isEmpty(page) ? "overview-summary.html" : page;
+        page = StringUtils.isEmpty(page) ? INDEX_PAGE : page;
         extract(modelView, groupId, artifactId, version, page);
 
         return modelView;
@@ -103,7 +105,10 @@ public class JavadocController {
         version = StringUtils.isEmpty(version) || "latest".equals(version) ? versioning.getRelease() : version;
         modelView.addObject("version", version)
             .addObject("versions", versioning.getVersions());
-
+        if ("sync".equals(page)) {
+            repository.delete(groupId, artifactId, version);
+            modelView.addObject("page", INDEX_PAGE);
+        }
         int status = repository.store(groupId, artifactId, version);
         modelView.addObject("status", status);
     }
