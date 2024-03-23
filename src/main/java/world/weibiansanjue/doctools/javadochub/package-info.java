@@ -4,6 +4,6 @@
  * 输入包 maven 坐标，即可查看对应文档。</p>
  *
  * @author weibiansanjue
- * @since 1.0.0
+ * @since 0.1.0
  */
 package world.weibiansanjue.doctools.javadochub;

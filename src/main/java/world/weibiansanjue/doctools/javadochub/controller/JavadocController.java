@@ -18,7 +18,7 @@ import java.io.IOException;
  * javadoc 获取控制器.
  *
  * @author weibiansanjue
- * @since 1.0.0
+ * @since 0.1.0
  */
 @Slf4j
 @Controller
@@ -46,7 +46,7 @@ public class JavadocController {
      * @param artifactId aritfact id
      * @return doc.html
      * @throws IOException io exception
-     * @since 1.0.0
+     * @since 0.1.0
      */
     @GetMapping(value = URL_GA)
     public ModelAndView getJavadocUrl(ModelAndView modelView,
@@ -69,7 +69,7 @@ public class JavadocController {
      * @param request http request
      * @return doc.html
      * @throws IOException io exception
-     * @since 1.0.0
+     * @since 0.1.0
      */
     @GetMapping(value = URL_PAGE)
     public ModelAndView getJavadocUrl(ModelAndView modelView,

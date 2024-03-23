@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
  * 仓库操作.
  *
  * @author weibiansanjue
- * @since 1.0.0
+ * @since 0.1.0
  */
 @Slf4j
 @Component("repository")
@@ -66,7 +66,7 @@ public class Repository implements CommandLineRunner {
      * @author weibiansanjue
      * @param groupId group id
      * @return artifact name list
-     * @since 1.0.0
+     * @since 0.1.0
      */
     public List<String> artifact(String groupId) {
         File groupRoot = Paths.get(LOCAL_PATH + File.separator + groupId).toFile();
@@ -87,7 +87,7 @@ public class Repository implements CommandLineRunner {
      * @param groupId group id
      * @param artifactId artifact id
      * @return remote metadata
-     * @since 1.0.0
+     * @since 0.1.0
      */
     public Versioning version(String groupId, String artifactId) {
         String rep = repositoryUrl(groupId);
@@ -142,7 +142,7 @@ public class Repository implements CommandLineRunner {
      * @param version version
      * @return status
      * @throws IOException io exception
-     * @since 1.0.0
+     * @since 0.1.0
      */
     public int store(String groupId, String artifactId, String version) throws IOException {
         File docFile = Paths.get(LOCAL_PATH + File.separator +
