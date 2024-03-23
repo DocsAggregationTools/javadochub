@@ -1,7 +1,7 @@
 
        __                      __           __  __      __
       / /___ __   ______ _____/ /___  _____/ / / /_  __/ /_
- __  / / __ `/ | / / __ `/ __  / __ \/ ___/ /_/ / / / / __ \  ${application.title}: ${application.formatted-version}
+ __  / / __ `/ | / / __ `/ __  / __ \/ ___/ /_/ / / / / __ \
 / /_/ / /_/ /| |/ / /_/ / /_/ / /_/ / /__/ __  / /_/ / /_/ /
 \____/\__,_/ |___/\__,_/\__,_/\____/\___/_/ /_/\__,_/_.___/   Spring Boot Version: ${spring-boot.formatted-version}
-Pid: ${pid}  Port: ${server.port}
+Version: v${javadochub.version} | Pid: ${pid} | Port: ${server.port}

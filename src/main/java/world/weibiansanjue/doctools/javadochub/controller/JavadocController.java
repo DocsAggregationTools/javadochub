@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.repository.metadata.Versioning;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,9 @@ public class JavadocController {
     private static final String URL_PAGE = "/doc/{groupId}/{artifactId}/{version}/**";
 
     private static final String INDEX_PAGE = "overview-summary.html";
+
+    @Value("${javadochub.version}")
+    private String JAVADOCHUB_VERSION;
 
     @Autowired
     private Repository repository;
@@ -90,7 +94,8 @@ public class JavadocController {
 
         log.info("extract javadoc. g={} a={} v={} p={}", groupId, artifactId, version, page);
 
-        modelView.addObject("groupId", groupId)
+        modelView.addObject("appversion", "v" + JAVADOCHUB_VERSION)
+            .addObject("groupId", groupId)
             .addObject("artifactId", artifactId)
             .addObject("artifactIds", repository.artifact(groupId))
             .addObject("page", page)

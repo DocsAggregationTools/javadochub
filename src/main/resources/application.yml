@@ -2,6 +2,7 @@ server:
   port: 8086
 
 javadochub:
+  version: @project.version@
   maven:
     # maven 公共仓库
     repository: https://repo.maven.apache.org/maven2
