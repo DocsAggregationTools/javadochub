@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
@@ -90,8 +89,7 @@ public class Repository implements CommandLineRunner {
      * @since 0.1.0
      */
     public Versioning version(String groupId, String artifactId) {
-        String rep = repositoryUrl(groupId);
-        String url = String.format("%s/%s/%s/%s", rep, groupId.replace(".", "/"), artifactId, "maven-metadata.xml");
+        String url = metadataUrl(groupId, artifactId);
         log.info("remote version. url={}", url);
 
         ResponseEntity<Metadata> resp = null;
@@ -110,6 +108,23 @@ public class Repository implements CommandLineRunner {
             versioning.setRelease(versioning.getVersions().get(0));
         }
         return versioning;
+    }
+
+    /**
+     * metadata url.
+     *
+     * @author weibiansanjue
+     * @param groupId group id
+     * @param artifactId artifact id
+     * @return remote metadata url
+     * @since 0.2.0
+     */
+    public String metadataUrl(String groupId, String artifactId) {
+        return String.format("%s/%s/%s/%s",
+                             repositoryUrl(groupId),
+                             groupId.replace(".", "/"),
+                             artifactId,
+                             "maven-metadata.xml");
     }
 
     /**
@@ -147,14 +162,11 @@ public class Repository implements CommandLineRunner {
     public int store(String groupId, String artifactId, String version) throws IOException {
         File docFile = Paths.get(LOCAL_PATH + File.separator +
             groupId + File.separator + artifactId + File.separator + version).toFile();
-        if (docFile.exists()) {
+        if (docFile.exists() && docFile.isDirectory() && ArrayUtils.isNotEmpty(docFile.listFiles())) {
             return 202;
         }
 
-        String rep = repositoryUrl(groupId);
-        String jarName = artifactId + "-" + version + "-javadoc.jar";
-        String url = String.format("%s/%s/%s/%s/%s",
-            rep, groupId.replace(".", "/"), artifactId, version, jarName);
+        String url = javadocDownloadUrl(groupId, artifactId, version);
         log.info("download javadoc. url={}", url);
         ResponseEntity<byte[]> resp = null;
         try {
@@ -170,8 +182,9 @@ public class Repository implements CommandLineRunner {
             return 500;
         }
         Path versionPath = Paths.get(JAR_PATH + File.separator +
-            groupId + File.separator + artifactId + File.separator + version);
-        Path jarPath = versionPath.resolve(jarName);
+            groupId + File.separator + artifactId + File.separator + version +
+                javadocJarName(artifactId, version));
+        Path jarPath = versionPath.resolve(javadocJarName(artifactId, version));
         versionPath.toFile().mkdirs();
         Files.write(jarPath, resp.getBody());
         log.info("download javadoc jar. local_path={}", jarPath);
@@ -181,6 +194,28 @@ public class Repository implements CommandLineRunner {
         log.info("discompress javadoc jar. local_path={}", docFile.getAbsolutePath());
         Files.delete(jarPath);
         return 202;
+    }
+
+    /**
+     * javadoc jar download url.
+     *
+     * @author weibiansanjue
+     * @param groupId group id
+     * @param artifactId artifact id
+     * @param version version
+     * @return url
+     * @since 0.2.0
+     */
+    public String javadocDownloadUrl(String groupId, String artifactId, String version) {
+        return String.format("%s/%s/%s/%s/%s",
+                             repositoryUrl(groupId),
+                             groupId.replace(".", "/"),
+                             artifactId, version,
+                             javadocJarName(artifactId, version));
+    }
+
+    private String javadocJarName(String artifactId, String version) {
+        return artifactId + "-" + version + "-javadoc.jar";
     }
 
     private String repositoryUrl(String groupId) {

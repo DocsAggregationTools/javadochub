@@ -115,7 +115,8 @@ public class JavadocController {
             modelView.addObject("page", INDEX_PAGE);
         }
         int status = repository.store(groupId, artifactId, version);
-        modelView.addObject("status", status);
+        modelView.addObject("status", status)
+            .addObject("download", repository.javadocDownloadUrl(groupId, artifactId, version));
     }
 
 }
