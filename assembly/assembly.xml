@@ -10,7 +10,7 @@
             <directoryMode>0755</directoryMode>
             <fileMode>0755</fileMode>
             <includes>
-                <include>application.yaml</include>
+                <include>application.yml</include>
             </includes>
         </fileSet>
         <fileSet>
