@@ -5,15 +5,6 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>src/main/resources</directory>
-            <outputDirectory>/</outputDirectory>
-            <directoryMode>0755</directoryMode>
-            <fileMode>0755</fileMode>
-            <includes>
-                <include>application.yml</include>
-            </includes>
-        </fileSet>
-        <fileSet>
             <directory>bin</directory>
             <outputDirectory>/</outputDirectory>
             <directoryMode>0755</directoryMode>
@@ -30,4 +21,11 @@
             </includes>
         </fileSet>
     </fileSets>
+    <files>
+        <file>
+            <source>target/classes/application-prod.yml</source>
+            <outputDirectory>/</outputDirectory>
+            <destName>application.yml</destName>
+        </file>
+    </files>
 </assembly>

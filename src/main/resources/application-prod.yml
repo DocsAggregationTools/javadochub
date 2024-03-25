@@ -1,9 +1,5 @@
 
-server:
-  port: 8086
-
 javadochub:
-  version: @project.version@
   maven:
     # maven 公共仓库
     repository: https://repo.maven.apache.org/maven2
@@ -13,12 +9,3 @@ javadochub:
     internal-group-prefix:
   # javadoc 存储路径
   storage: ${user.home}/.javadochub
-
-logging:
-  level:
-    world.weibiansanjue.doctools.javadochub: debug
-
-spring:
-  web:
-    resources:
-      static-locations: classpath:/static/, file:${javadochub.storage}/storage
