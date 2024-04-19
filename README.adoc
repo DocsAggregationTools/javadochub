@@ -1,15 +1,15 @@
 
 = JavadocHub
 
-轻量级的 javadoc 文档聚合、托管服务
+可自部署的轻量级 javadoc 聚合、托管、查看服务。适合个人、团队使用
 
 
-## 环境信息
+== 环境信息
 
 * jdk1.8
 * maven3
 
-## 运行
+== 运行
 
 编译
 
@@ -34,6 +34,6 @@ http://localhost:8086
 [source,shell]
 ....
 mvn clean package
-docker build --platform linux/amd64 -t javadochub:${tag} .
-
+docker build --platform linux/amd64 -t weibian3jue/javadochub:${tag} .
+docker tag weibian3jue/javadochub:${tag} weibian3jue/javadochub:latest
 ....

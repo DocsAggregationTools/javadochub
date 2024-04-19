@@ -16,7 +16,7 @@
     <version>0.2.2</version>
     <packaging>jar</packaging>
     <name>JavadocHub</name>
-    <description>轻量级 Javadoc 聚合、托管服务</description>
+    <description>可自部署的轻量级 javadoc 聚合、托管、查看服务</description>
 
     <properties>
         <java.version>1.8</java.version>
