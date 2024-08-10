@@ -14,8 +14,9 @@
   <script>
     function iframeload(i) {
       var href = i.contentWindow.location.href;
-      var domain = href.split('/')[2];
-      href = href.replace(domain, domain + '/doc');
+      href = href.replace('/snap', '/snapshot');
+      // var domain = href.split('/')[2];
+      // href = href.replace(domain, domain + '/snapshot');
       window.history.replaceState('', '', href);
       console.log(href);
     }
@@ -24,7 +25,7 @@
 <body>
 <div class="body-container">
 
-  <nav class="navbar navbar-inverse navbar-fixed-top" style="height: 51px;">
+  <nav class="navbar navbar-inverse navbar-fixed-top" style="height: 51px; border-width: 1px 1px 1px 1px; border-color: #ffc107">
     <div class="nav-container">
       <div class="navbar-header">
         <a class="navbar-brand" href="/" style="color: #fff;font-size:20px;">/** JavadocHub */&nbsp;
@@ -46,7 +47,7 @@
             </a>
             <ul class="dropdown-menu">
               <li th:each="id : ${artifactIds}">
-                <a class="dropdown-item" href="#" th:text="${id}" th:href="|/doc/${groupId}/${id}/|">artifactId</a>
+                <a class="dropdown-item" href="#" th:text="${id}" th:href="|/snapshot/${groupId}/${id}/|">artifactId</a>
               </li>
             </ul>
           </li>
@@ -60,15 +61,15 @@
             <ul class="dropdown-menu">
               <li th:each="v : ${versions}">
                 <a class="dropdown-item version " href="#" th:text="${v}"
-                   th:href="|/doc/${groupId}/${artifactId}/${v}/overview-summary.html|">version</a>
+                   th:href="|/snapshot/${groupId}/${artifactId}/${v}/overview-summary.html|">version</a>
               </li>
             </ul>
           </li>
 
           <!-- 版本选择 -->
           <li id="snapshot" title="snapshot" th:if="${isInternal}">
-              <a th:href="|/snapshot/${groupId}/${artifactId}/latest|">
-                  <span>快照版本</span>
+              <a th:href="|/doc/${groupId}/${artifactId}/latest|">
+                  <span>正式版本</span>
               </a>
           </li>
 
@@ -79,7 +80,9 @@
 
     <div class="nav-container" style="float:right;">
       <ul class="nav navbar-nav">
-        <li><a th:href="|/doc/${groupId}/${artifactId}/${version}/sync|">刷新</a></li>
+
+        <li></li>
+        <li><a th:href="|/snapshot/${groupId}/${artifactId}/${version}/sync|">刷新</a></li>
         <li><a th:href="${download}">下载</a></li>
         <li><a href="https://github.com/DocsAggregationTools/javadochub" target="_blank">GitHub</a></li>
       </ul>
@@ -89,7 +92,7 @@
 
   <div class="fill">
     <iframe th:if="${status == 202}" name="main" id="docpage" onload="iframeload(this)"
-      th:src="|/${groupId}/${artifactId}/${version}/${page}|" >
+      th:src="|/snap/${groupId}/${artifactId}/${version}/${page}|" >
     </iframe>
     <h1 th:if="${status == 404}" align="center">😅 javadoc 不存在</h1>
     <h1 th:if="${status != 404 && status != 202}" align="center">😅 javadoc 加载失败，请重试</h1>

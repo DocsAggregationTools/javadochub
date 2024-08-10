@@ -13,7 +13,7 @@ content:
   sources:
   # 本项目文档
   - url: https://github.com/DocsAggregationTools/javadochub.git
-    branches: develop
+    branches: main
     start_path: docs
 
 

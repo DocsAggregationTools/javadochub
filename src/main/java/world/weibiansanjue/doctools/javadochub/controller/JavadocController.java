@@ -3,15 +3,16 @@ package world.weibiansanjue.doctools.javadochub.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.repository.metadata.Versioning;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
-import world.weibiansanjue.doctools.javadochub.repository.Repository;
+import world.weibiansanjue.doctools.javadochub.repository.IRepository;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
@@ -25,18 +26,25 @@ import java.io.IOException;
 @Controller
 public class JavadocController {
 
-    private static final String URL_GA   = "/doc/{groupId}/{artifactId}";
-    private static final String URL_PAGE = "/doc/{groupId}/{artifactId}/{version}/**";
+    private static final String URL_GA   = "/{rep:doc|snapshot}/{groupId}/{artifactId}";
+    private static final String URL_PAGE = "/{rep:doc|snapshot}/{groupId}/{artifactId}/{version}/**";
 
     private static final String INDEX_PAGE = "overview-summary.html";
 
     @Value("${javadochub.version}")
     private String JAVADOCHUB_VERSION;
 
-    @Autowired
-    private Repository repository;
+    @Resource
+    @Qualifier("repository")
+    private IRepository repositoryRelease;
 
-    @GetMapping(value = "/doc")
+    @Resource
+    private IRepository repositorySnapshot;
+
+    private IRepository repository;
+
+
+    @GetMapping(value = "/{rep:doc|snapshot}")
     public String redirectHelp() {
         return "redirect:/";
     }
@@ -54,11 +62,11 @@ public class JavadocController {
      */
     @GetMapping(value = URL_GA)
     public ModelAndView getJavadocUrl(ModelAndView modelView,
+                                      @PathVariable("rep")        String rep,
                                       @PathVariable("groupId")    String groupId,
                                       @PathVariable("artifactId") String artifactId) throws IOException {
-
-        extract(modelView, groupId, artifactId, null, INDEX_PAGE);
-
+        repository = getRepository(groupId, rep);
+        extract(modelView, groupId, artifactId, null, INDEX_PAGE, resetRep(groupId, rep));
         return modelView;
     }
 
@@ -77,29 +85,47 @@ public class JavadocController {
      */
     @GetMapping(value = URL_PAGE)
     public ModelAndView getJavadocUrl(ModelAndView modelView,
+                                      @PathVariable("rep")        String rep,
                                       @PathVariable("groupId")    String groupId,
                                       @PathVariable("artifactId") String artifactId,
                                       @PathVariable("version")    String version,
                                       HttpServletRequest          request) throws IOException {
 
+
+        repository = getRepository(groupId, rep);
         String page = new AntPathMatcher().extractPathWithinPattern(URL_PAGE, request.getServletPath());
         page = StringUtils.isEmpty(page) ? INDEX_PAGE : page;
-        extract(modelView, groupId, artifactId, version, page);
+        extract(modelView, groupId, artifactId, version, page, resetRep(groupId, rep));
 
         return modelView;
     }
 
-    private void extract(ModelAndView modelView,
-        String groupId, String artifactId, String version, String page) throws IOException {
+    private IRepository getRepository(String groupId, String rep) {
+        if ("snapshot".equals(rep) && repositorySnapshot.isInternal(groupId)) {
+            return repositorySnapshot;
+        }
+        return repositoryRelease;
+    }
 
-        log.info("extract javadoc. g={} a={} v={} p={}", groupId, artifactId, version, page);
+    private String resetRep(String groupId, String rep) {
+        if ("snapshot".equals(rep) && repositorySnapshot.isInternal(groupId)){
+            return rep;
+        }
+        return "doc";
+    }
+
+    private void extract(ModelAndView modelView,
+        String groupId, String artifactId, String version, String page, String rep) throws IOException {
+
+        log.info("extract javadoc. g={} a={} v={} p={} rep={}", groupId, artifactId, version, page, rep);
 
         modelView.addObject("appversion", "v" + JAVADOCHUB_VERSION)
             .addObject("groupId", groupId)
             .addObject("artifactId", artifactId)
             .addObject("artifactIds", repository.artifact(groupId))
             .addObject("page", page)
-            .setViewName("doc");
+            .addObject("isInternal", repository.isInternal(groupId))
+            .setViewName(rep);
 
         Versioning versioning = repository.version(groupId, artifactId);
         if (null == versioning) {

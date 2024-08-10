@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.repository.metadata.Metadata;
+import org.apache.maven.artifact.repository.metadata.Snapshot;
 import org.apache.maven.artifact.repository.metadata.Versioning;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -32,22 +33,22 @@ import java.util.stream.Collectors;
  * 仓库操作.
  *
  * @author weibiansanjue
- * @since 0.1.0
+ * @since 0.3.0
  */
 @Slf4j
-@Component("repository")
-public class Repository implements IRepository, CommandLineRunner {
+@Component("repositorySnapshot")
+public class RepositorySnapshot implements IRepository, CommandLineRunner {
 
-    @Value("${javadochub.storage}/storage")
+    @Value("${javadochub.storage}/storage/snap")
     private String LOCAL_PATH;
 
-    @Value("${javadochub.storage}/javadoc")
+    @Value("${javadochub.storage}/javadoc/snap")
     private String JAR_PATH;
 
-    @Value("${javadochub.maven.repository}")
+    @Value("${javadochub.maven.snapshot}")
     private String REPOSITORY_URL;
 
-    @Value("${javadochub.maven.internal}")
+    @Value("${javadochub.maven.snapshot}")
     private String INTERNAL_URL;
 
     @Value("${javadochub.maven.internal-group-prefix}")
@@ -55,7 +56,7 @@ public class Repository implements IRepository, CommandLineRunner {
 
     private RestTemplate restTemplate;
 
-    public Repository() {
+    public RepositorySnapshot() {
         restTemplate = new RestTemplate();
     }
 
@@ -65,7 +66,7 @@ public class Repository implements IRepository, CommandLineRunner {
      * @author weibiansanjue
      * @param groupId group id
      * @return artifact name list
-     * @since 0.1.0
+     * @since 0.3.0
      */
     public List<String> artifact(String groupId) {
         File groupRoot = Paths.get(LOCAL_PATH + File.separator + groupId).toFile();
@@ -86,7 +87,7 @@ public class Repository implements IRepository, CommandLineRunner {
      * @param groupId group id
      * @param artifactId artifact id
      * @return remote metadata
-     * @since 0.1.0
+     * @since 0.3.0
      */
     public Versioning version(String groupId, String artifactId) {
         String url = metadataUrl(groupId, artifactId);
@@ -110,10 +111,13 @@ public class Repository implements IRepository, CommandLineRunner {
         return versioning;
     }
 
-    @Override
     public Versioning version(String groupId, String artifactId, String version) {
-        return null;
+        String url = snapshotMetadataUrl(groupId, artifactId, version);
+        log.info("remote snapshot version. url={}", url);
+        Metadata metadata = restTemplate.getForEntity(url, Metadata.class).getBody();
+        return metadata.getVersioning();
     }
+
 
     /**
      * metadata url.
@@ -122,13 +126,24 @@ public class Repository implements IRepository, CommandLineRunner {
      * @param groupId group id
      * @param artifactId artifact id
      * @return remote metadata url
-     * @since 0.2.0
+     * @since 0.3.0
      */
     public String metadataUrl(String groupId, String artifactId) {
+        // http://ip:port/groupId/artifactId/maven-metadata.xml
         return String.format("%s/%s/%s/%s",
                              repositoryUrl(groupId),
                              groupId.replace(".", "/"),
                              artifactId,
+                             "maven-metadata.xml");
+    }
+
+    public String snapshotMetadataUrl(String groupId, String artifactId, String version) {
+        // http://ip:port/groupId/artifactId/version/maven-metadata.xml
+        return String.format("%s/%s/%s/%s/%s",
+                             repositoryUrl(groupId),
+                             groupId.replace(".", "/"),
+                             artifactId,
+                             version,
                              "maven-metadata.xml");
     }
 
@@ -141,7 +156,7 @@ public class Repository implements IRepository, CommandLineRunner {
      * @param version version
      * @return 删除成功
      * @throws IOException io e
-     * @since 0.2.0
+     * @since 0.3.0
      */
     public boolean delete(String groupId, String artifactId, String version) throws IOException {
         Path docFile = Paths.get(LOCAL_PATH + File.separator +
@@ -162,7 +177,7 @@ public class Repository implements IRepository, CommandLineRunner {
      * @param version version
      * @return status
      * @throws IOException io exception
-     * @since 0.1.0
+     * @since 0.3.0
      */
     public int store(String groupId, String artifactId, String version) throws IOException {
         File docFile = Paths.get(LOCAL_PATH + File.separator +
@@ -209,14 +224,17 @@ public class Repository implements IRepository, CommandLineRunner {
      * @param artifactId artifact id
      * @param version version
      * @return url
-     * @since 0.2.0
+     * @since 0.3.0
      */
     public String javadocDownloadUrl(String groupId, String artifactId, String version) {
+        Versioning versioning = version(groupId, artifactId, version);
+        Snapshot snapshot = versioning.getSnapshot();
+        String  snapshotVersion = version.replace("SNAPSHOT", snapshot.getTimestamp() + "-" + snapshot.getBuildNumber());
         return String.format("%s/%s/%s/%s/%s",
                              repositoryUrl(groupId),
                              groupId.replace(".", "/"),
                              artifactId, version,
-                             javadocJarName(artifactId, version));
+                             javadocJarName(artifactId, snapshotVersion));
     }
 
     @Override
@@ -245,7 +263,6 @@ public class Repository implements IRepository, CommandLineRunner {
         return REPOSITORY_URL;
     }
 
-    @Override
     public void run(String... args) throws Exception {
         log.info("javadochub storage. path={}", LOCAL_PATH);
         log.info("javadochub remote repository. url={}", REPOSITORY_URL);

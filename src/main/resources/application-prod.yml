@@ -5,6 +5,7 @@ javadochub:
     repository: https://repo.maven.apache.org/maven2
     # maven 私有仓库
     internal:
+    snapshot: 
     # 私有仓库私有包 group 前缀，多个使用逗号分割，例如 world.weibiansanjue,com.weibiansanjue
     internal-group-prefix:
   # javadoc 存储路径
