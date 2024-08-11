@@ -13,7 +13,7 @@
 
     <groupId>world.weibiansanjue.doctools</groupId>
     <artifactId>javadochub</artifactId>
-    <version>0.2.2</version>
+    <version>0.3.0</version>
     <packaging>jar</packaging>
     <name>JavadocHub</name>
     <description>可自部署的轻量级 javadoc 聚合、托管、查看服务</description>
