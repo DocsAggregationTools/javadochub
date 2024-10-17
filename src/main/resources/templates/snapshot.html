@@ -23,12 +23,12 @@
   </script>
 </head>
 <body>
-<div class="body-container">
+<div class="body-container" style="border-width: 58px 5px 5px 5px; border-style: solid; border-color: #ffc107">
 
-  <nav class="navbar navbar-inverse navbar-fixed-top" style="height: 51px; border-width: 1px 1px 1px 1px; border-color: #ffc107">
+  <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="nav-container">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/" style="color: #fff;font-size:20px;">/** JavadocHub */&nbsp;
+        <a class="navbar-brand" href="/" style="color: #ffc107;font-size:20px;">/** JavadocHub */&nbsp;
           <sup th:text="${appversion}"></sup></a>
 
         <ul class="nav navbar-nav">
@@ -82,15 +82,15 @@
       <ul class="nav navbar-nav">
 
         <li></li>
-        <li><a th:href="|/snapshot/${groupId}/${artifactId}/${version}/sync|">刷新</a></li>
-        <li><a th:href="${download}">下载</a></li>
+        <li><a style="color: #ffc107;" th:href="|/snapshot/${groupId}/${artifactId}/${version}/sync|">刷新</a></li>
+        <li><a style="color: #ffc107;" th:href="${download}">下载</a></li>
         <li><a href="https://github.com/DocsAggregationTools/javadochub" target="_blank">GitHub</a></li>
       </ul>
 
     </div>
   </nav>
 
-  <div class="fill">
+  <div class="fill" style="padding-top: 0px;">
     <iframe th:if="${status == 202}" name="main" id="docpage" onload="iframeload(this)"
       th:src="|/snap/${groupId}/${artifactId}/${version}/${page}|" >
     </iframe>
